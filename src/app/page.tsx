@@ -6,7 +6,8 @@ export default function Home() {
         <div className="flex flex-col gap-6 p-12 bg-black/90 w-4/5 rounded-xl
         sm:max-w-96 text-white mx-auto sm:text-2xl 
         ">
-          <h1>Ganixx&apos;s Computer <br /> Reapir Shop</h1>
+          <h1 className="text-3xl font-bold">Ganixx&apos;s
+          Computer <br />Repair Shop</h1>
           <address>
             555 Gateway Lane <br />
             Arlington, Tx 5555
