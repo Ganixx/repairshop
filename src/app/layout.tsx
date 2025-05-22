@@ -1,26 +1,26 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 
-const geistSans = Geist({
+const geistSans = localFont({
+  src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
-  subsets: ["latin"],
+  weight: "100 900",
 });
-
-const geistMono = Geist_Mono({
+const geistMono = localFont({
+  src: "./fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: "100 900",
 });
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | Computer Repair Shop",
-    default: "Computer Repair Shop",
-    
+    template: '%s | Computer Repair Shop',
+    default: 'Computer Repair Shop',
   },
-  description: "Ganixx's computer Repair Shop",
-  applicationName: "Repair Shop",
+  description: "Dan's Computer Repair Shop",
+  applicationName: "Repair Shop"
 };
 
 export default function RootLayout({
@@ -34,12 +34,12 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider
-        attribute="class"
-        defaultTheme="system"
-        enableSystem
-        disableTransitionOnChange
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
         >
-        {children}
+          {children}
         </ThemeProvider>
       </body>
     </html>

@@ -1,73 +1,79 @@
-import { getTicket } from "@/lib/queries/getTicket"
+import { getCustomer } from "@/lib/queries/getCustomer";
+import { getTicket } from "@/lib/queries/getTicket";
+import { BackButton } from "@/components/BackButton";
 import * as Sentry from "@sentry/nextjs"
-import { BackButton } from "@/components/BackButton"
-import { getCustomer } from "@/lib/queries/getCustomer"
+import TicketForm from "@/app/(rs)/tickets/form/TicketForm";
 
-
-/*
-1. we expect either customerid or ticketid, not both.
-*/
 export default async function TicketFormPage({
-    searchParams
-}:{
-    searchParams: Promise<{ [key : string] : string | undefined}>
-}){
-    try{
-        const {ticketId, customerId } = await searchParams
+    searchParams,
+}: {
+    searchParams: Promise<{ [key: string]: string | undefined }>
+}) {
+    try {
 
-        if(!ticketId && !customerId){
-            return(
+        const { customerId, ticketId } = await searchParams
+
+        if (!customerId && !ticketId) {
+            return (
                 <>
-                    <h2 className="text-2xl mb-2">No ticket or customer Id provided</h2>
+                    <h2 className="text-2xl mb-2">Ticket ID or Customer ID required to load ticket form</h2>
                     <BackButton title="Go Back" variant="default" />
                 </>
             )
         }
-        
-        if(customerId){
+
+        // New ticket form 
+        if (customerId) {
             const customer = await getCustomer(parseInt(customerId))
-            if(!customer){
-                return(
+
+            if (!customer) {
+                return (
                     <>
-                        <h2>Customer Id #{customerId} not found</h2>
+                        <h2 className="text-2xl mb-2">Customer ID #{customerId} not found</h2>
                         <BackButton title="Go Back" variant="default" />
                     </>
                 )
             }
 
-            if(!customer.active){
-                return(
+            if (!customer.active) {
+                return (
                     <>
-                        <h2>Customer Id #{customerId} is not active</h2>
+                        <h2 className="text-2xl mb-2">Customer ID #{customerId} is not active.</h2>
                         <BackButton title="Go Back" variant="default" />
                     </>
                 )
             }
-            console.log("customer", customer)
-            // Return the customer details and ticket form
+
+            // return ticket form 
+            console.log(customer)
+            return <TicketForm customer={customer} />
         }
 
-        if(ticketId){
+        // Edit ticket form 
+        if (ticketId) {
             const ticket = await getTicket(parseInt(ticketId))
-            if(!ticket){
-                return(
+
+            if (!ticket) {
+                return (
                     <>
-                        <h2>Ticket Id #{ticketId} not found</h2>
+                        <h2 className="text-2xl mb-2">Ticket ID #{ticketId} not found</h2>
                         <BackButton title="Go Back" variant="default" />
                     </>
                 )
             }
 
-            const customer = await getCustomer(ticket.customerId);
+            const customer = await getCustomer(ticket.customerId)
 
-            //return the ticketform
-            console.log("ticket", ticket)
-            console.log("customer", customer)
+            // return ticket form 
+            console.log('ticket: ', ticket)
+            console.log('customer: ', customer)
+            return <TicketForm customer={customer} ticket={ticket} />
         }
-    }catch(error){
-        if(error instanceof Error){
-            Sentry.captureException(error)
-            throw error
+
+    } catch (e) {
+        if (e instanceof Error) {
+            Sentry.captureException(e)
+            throw e
         }
     }
 }

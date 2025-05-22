@@ -1,11 +1,11 @@
 import { db } from "@/db"
-import { eq } from "drizzle-orm"
 import { tickets } from "@/db/schema"
+import { eq } from "drizzle-orm"
 
-export async function getTicket(id: number){
+export async function getTicket(id: number) {
     const ticket = await db.select()
         .from(tickets)
-        .where(eq(tickets.id,id))
+        .where(eq(tickets.id, id))
 
     return ticket[0]
 }
