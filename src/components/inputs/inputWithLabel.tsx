@@ -37,7 +37,7 @@ export function InputWithLabel<S>({
                         <Input
                             id={nameInSchema}
                             className={` w-full max-w-xs disabled:text-blue-500
-                          dark:disabled:text-green-500 first-line:disabled:opacity-75 ${className}`}
+                          dark:disabled:text-yellow-300 first-line:disabled:opacity-75 ${className}`}
                             {...props}
                             {...field}
                         />
